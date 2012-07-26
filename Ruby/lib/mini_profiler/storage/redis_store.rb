@@ -35,8 +35,12 @@ module Rack
       private 
 
       def redis
-        require 'redis' unless defined? Redis
-        Redis.new 
+        @redis ||= if $redis
+          $redis
+        else
+          require 'redis' unless defined? Redis
+          Redis.new 
+        end
       end
 
     end

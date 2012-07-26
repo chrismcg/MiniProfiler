@@ -41,4 +41,19 @@ describe Rack::MiniProfiler::RedisStore do
 
   end
 
+  context "existing redis instance" do
+    before do
+      $redis = nil
+    end
+
+    after do
+      $redis = nil
+    end
+
+    it "uses global redis if it's available" do
+      $redis = stub
+      $redis.should_receive(:smembers)
+      Rack::MiniProfiler::RedisStore.new(nil).get_unviewed_ids('test')
+    end
+  end
 end
